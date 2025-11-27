@@ -147,6 +147,7 @@ const FireCursor: React.FC<FireCursorProps> = ({ color = 'white' }) => {
   return (
     <canvas
       ref={canvasRef}
+      style={{ background: 'transparent' }}
       className="fixed inset-0 pointer-events-none z-50 mix-blend-screen"
     />
   );

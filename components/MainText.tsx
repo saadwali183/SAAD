@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
 
 interface MainTextProps {
   isMagic: boolean;
@@ -8,18 +8,32 @@ interface MainTextProps {
 
 const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick }) => {
   // Animation variants
-  const container = {
+  const container: Variants = {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
       transition: {
         staggerChildren: 0.15,
-        delayChildren: 0.5,
+        delayChildren: 0.2,
       },
     },
   };
 
-  const letterAnim = {
+  const contentFade: Variants = {
+    initial: { opacity: 0, scale: 0.95 },
+    animate: { 
+        opacity: 1, 
+        scale: 1,
+        transition: { duration: 0.5 }
+    },
+    exit: { 
+        opacity: 0, 
+        scale: 1.05,
+        transition: { duration: 0.3 }
+    }
+  };
+
+  const letterAnim: Variants = {
     hidden: { opacity: 0, y: 20, filter: 'blur(10px)' },
     show: { 
         opacity: 1, 
@@ -29,16 +43,10 @@ const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick }) => {
             duration: 0.8,
             ease: [0.6, -0.05, 0.01, 0.99]
         }
-    },
-    exit: {
-        opacity: 0,
-        y: -20,
-        filter: 'blur(10px)',
-        transition: { duration: 0.5 }
     }
   };
 
-  const mainTextPulse = {
+  const mainTextPulse: Variants = {
     hidden: { 
         textShadow: "0 0 0px rgba(255,255,255,0)" 
     },
@@ -51,17 +59,13 @@ const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick }) => {
       transition: {
         duration: 3,
         repeat: Infinity,
-        repeatType: "reverse" as const,
+        repeatType: "reverse",
         ease: "easeInOut",
       },
-    },
-    exit: {
-        textShadow: "0 0 0px rgba(255,255,255,0)",
-        transition: { duration: 0.5 }
     }
   };
 
-  const imageAnim = {
+  const imageAnim: Variants = {
     hidden: { opacity: 0, scale: 0.8, y: 50 },
     show: { 
         opacity: 1, 
@@ -70,12 +74,12 @@ const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick }) => {
         transition: {
             duration: 1.2,
             ease: "easeOut",
-            delay: 1.5
+            delay: 1.0
         }
     }
   };
 
-  const flickerGlow = {
+  const flickerGlow: Variants = {
     animate: {
       textShadow: [
         "0px 0px 4px rgba(255,255,255,0.1)",
@@ -88,7 +92,7 @@ const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick }) => {
       transition: {
         duration: 3,
         repeat: Infinity,
-        repeatType: "reverse" as const,
+        repeatType: "reverse",
         ease: "easeInOut",
       }
     }
@@ -99,17 +103,18 @@ const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick }) => {
       variants={container}
       initial="hidden"
       animate="show"
-      className="flex flex-col items-center justify-center text-center z-10 select-none px-4 w-full"
+      className="flex flex-col items-center justify-center text-center z-[60] select-none px-4 w-full h-full pointer-events-none"
     >
+      <div className="pointer-events-auto">
       <AnimatePresence mode="wait">
         {isMagic ? (
             /* Magic Mode Content */
             <motion.div 
                 key="magic-content"
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 1.1 }}
-                transition={{ duration: 0.8 }}
+                variants={contentFade}
+                initial="initial"
+                animate="animate"
+                exit="exit"
                 className="flex flex-col items-center"
             >
                 <h1 className="text-6xl md:text-8xl font-stylish text-white mb-6 drop-shadow-lg">
@@ -132,6 +137,9 @@ const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick }) => {
             <motion.div 
                 key="default-content"
                 className="flex flex-col items-center"
+                variants={contentFade}
+                initial="initial"
+                animate="animate"
                 exit="exit"
             >
               {/* Primary Line: saadiii */}
@@ -139,6 +147,8 @@ const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick }) => {
                 <motion.h1 
                     className="text-8xl md:text-[10rem] font-stylish text-white leading-none tracking-tight"
                     variants={mainTextPulse}
+                    animate="show"
+                    initial="hidden"
                 >
                   {Array.from("saadiii").map((char, i) => (
                     <motion.span key={i} variants={letterAnim} className="inline-block">
@@ -152,7 +162,7 @@ const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick }) => {
               <div className="text-xl md:text-3xl font-light tracking-[0.2em] text-neutral-300 flex flex-col md:flex-row items-center gap-2 md:gap-4 mb-8 md:mb-12">
                 <motion.div className="flex lowercase">
                     {Array.from("i love").map((char, i) => (
-                        <motion.span key={i} variants={letterAnim} className="inline-block">
+                        <motion.span key={i} variants={letterAnim} animate="show" initial="hidden" className="inline-block">
                             {char === " " ? "\u00A0" : char}
                         </motion.span>
                     ))}
@@ -165,7 +175,7 @@ const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick }) => {
                     className="flex relative font-bold text-white lowercase"
                 >
                      {Array.from("finger fries").map((char, i) => (
-                        <motion.span key={i} variants={letterAnim} className="inline-block">
+                        <motion.span key={i} variants={letterAnim} animate="show" initial="hidden" className="inline-block">
                             {char === " " ? "\u00A0" : char}
                         </motion.span>
                     ))}
@@ -175,6 +185,8 @@ const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick }) => {
               {/* The Finger Fries Picture - Properly Blended */}
               <motion.div 
                 variants={imageAnim}
+                initial="hidden"
+                animate="show"
                 className={`relative w-80 h-80 md:w-[30rem] md:h-[30rem] rounded-xl overflow-hidden mb-12 transition-all duration-700 ${isMagic ? 'shadow-xl border-4 border-white' : 'shadow-none border-none'}`}
               >
                 <img 
@@ -187,6 +199,8 @@ const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick }) => {
               {/* The Pink Button */}
               <motion.button
                 variants={letterAnim}
+                initial="hidden"
+                animate="show"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={onMagicClick}
@@ -197,6 +211,7 @@ const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick }) => {
             </motion.div>
         )}
       </AnimatePresence>
+      </div>
     </motion.div>
   );
 };
