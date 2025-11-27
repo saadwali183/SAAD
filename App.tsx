@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import FireCursor from './components/FireCursor';
 import MainText from './components/MainText';
 import AmbientParticles from './components/AmbientParticles';
+import CallingOverlay from './components/CallingOverlay';
+import { AnimatePresence } from 'framer-motion';
 
 const App: React.FC = () => {
   const [isMagic, setIsMagic] = useState(false);
+  const [isCalling, setIsCalling] = useState(false);
 
   return (
     <main 
@@ -27,7 +30,18 @@ const App: React.FC = () => {
       <FireCursor color={isMagic ? '#ffffff' : '#ffffff'} />
 
       {/* The Content Layer */}
-      <MainText isMagic={isMagic} onMagicClick={() => setIsMagic(true)} />
+      <MainText 
+        isMagic={isMagic} 
+        onMagicClick={() => setIsMagic(!isMagic)} 
+        onCallClick={() => setIsCalling(true)}
+      />
+
+      {/* Calling Overlay */}
+      <AnimatePresence>
+        {isCalling && (
+            <CallingOverlay onEndCall={() => setIsCalling(false)} />
+        )}
+      </AnimatePresence>
     </main>
   );
 };

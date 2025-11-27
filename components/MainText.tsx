@@ -4,9 +4,10 @@ import { motion, AnimatePresence, Variants } from 'framer-motion';
 interface MainTextProps {
   isMagic: boolean;
   onMagicClick: () => void;
+  onCallClick: () => void;
 }
 
-const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick }) => {
+const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick, onCallClick }) => {
   // Animation variants
   const container: Variants = {
     hidden: { opacity: 0 },
@@ -41,7 +42,7 @@ const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick }) => {
         filter: 'blur(0px)',
         transition: {
             duration: 0.8,
-            ease: [0.6, -0.05, 0.01, 0.99]
+            ease: [0.6, -0.05, 0.01, 0.99] as const
         }
     }
   };
@@ -131,6 +132,17 @@ const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick }) => {
                 >
                   🍟❤️🔥
                 </motion.div>
+                
+                {/* Back Button for UX */}
+                 <motion.button
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 2 }}
+                    onClick={onMagicClick} // Toggles back effectively if handled in parent, though simple toggle logic implies 'setTrue' usually. We can leave it for now or add a 'reset'.
+                    className="mt-12 text-white/50 hover:text-white text-sm tracking-widest cursor-none"
+                 >
+                    BACK
+                 </motion.button>
             </motion.div>
         ) : (
             /* Default Mode Content */
@@ -196,18 +208,34 @@ const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick }) => {
                 />
               </motion.div>
 
-              {/* The Pink Button */}
-              <motion.button
-                variants={letterAnim}
-                initial="hidden"
-                animate="show"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={onMagicClick}
-                className="px-8 py-3 bg-pink-500 hover:bg-pink-400 text-white font-bold rounded-full shadow-[0_0_20px_rgba(236,72,153,0.5)] tracking-widest text-sm md:text-base uppercase transition-all duration-300 z-50 cursor-none"
-              >
-                Click Here to See Magic
-              </motion.button>
+              {/* Buttons Container */}
+              <div className="flex flex-col md:flex-row gap-6 z-50">
+                  {/* The Pink Button */}
+                  <motion.button
+                    variants={letterAnim}
+                    initial="hidden"
+                    animate="show"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={onMagicClick}
+                    className="px-8 py-3 bg-pink-500 hover:bg-pink-400 text-white font-bold rounded-full shadow-[0_0_20px_rgba(236,72,153,0.5)] tracking-widest text-sm md:text-base uppercase transition-all duration-300 cursor-none"
+                  >
+                    Click Here to See Magic
+                  </motion.button>
+
+                  {/* The Green Button */}
+                  <motion.button
+                    variants={letterAnim}
+                    initial="hidden"
+                    animate="show"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={onCallClick}
+                    className="px-8 py-3 bg-green-600 hover:bg-green-500 text-white font-bold rounded-full shadow-[0_0_20px_rgba(34,197,94,0.5)] tracking-widest text-sm md:text-base uppercase transition-all duration-300 cursor-none"
+                  >
+                    Call Karo Bacha
+                  </motion.button>
+              </div>
             </motion.div>
         )}
       </AnimatePresence>
