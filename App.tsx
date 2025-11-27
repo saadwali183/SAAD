@@ -6,12 +6,15 @@ import AmbientParticles from './components/AmbientParticles';
 import CallingOverlay from './components/CallingOverlay';
 import HeartRain from './components/HeartRain';
 import ComplimentOverlay from './components/ComplimentOverlay';
+import ChaosOverlay from './components/ChaosOverlay';
+import MidnightThoughts from './components/MidnightThoughts';
 import { AnimatePresence } from 'framer-motion';
 
 const App: React.FC = () => {
   const [isMagic, setIsMagic] = useState(false);
   const [isCalling, setIsCalling] = useState(false);
   const [showCompliment, setShowCompliment] = useState(false);
+  const [isChaos, setIsChaos] = useState(false);
 
   return (
     <main 
@@ -44,7 +47,11 @@ const App: React.FC = () => {
         onMagicClick={() => setIsMagic(!isMagic)} 
         onCallClick={() => setIsCalling(true)}
         onHypeClick={() => setShowCompliment(true)}
+        onChaosClick={() => setIsChaos(true)}
       />
+
+      {/* Ticker Tape - Midnight Thoughts */}
+      <MidnightThoughts />
 
       {/* Calling Overlay */}
       <AnimatePresence>
@@ -57,6 +64,13 @@ const App: React.FC = () => {
       <AnimatePresence>
         {showCompliment && (
             <ComplimentOverlay onClose={() => setShowCompliment(false)} />
+        )}
+      </AnimatePresence>
+      
+      {/* Chaos/Glitch Overlay */}
+      <AnimatePresence>
+        {isChaos && (
+            <ChaosOverlay onEnd={() => setIsChaos(false)} />
         )}
       </AnimatePresence>
     </main>

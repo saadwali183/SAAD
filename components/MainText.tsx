@@ -7,6 +7,7 @@ interface MainTextProps {
   onMagicClick: () => void;
   onCallClick: () => void;
   onHypeClick: () => void;
+  onChaosClick: () => void;
 }
 
 // Single Static High-Quality Image
@@ -23,7 +24,7 @@ const LETTER_COLORS = [
     "#FFFFFF", // White
 ];
 
-const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick, onCallClick, onHypeClick }) => {
+const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick, onCallClick, onHypeClick, onChaosClick }) => {
   const [weirdText, setWeirdText] = useState("WEIRD CAPTURES");
 
   // Animation variants
@@ -134,6 +135,27 @@ const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick, onCallClick,
       animate="show"
       className="flex flex-col items-center justify-center text-center z-[60] select-none px-4 w-full h-full pointer-events-none"
     >
+      {/* IDR CLICK NA KARNA - Chaos Button */}
+      {!isMagic && (
+        <motion.button
+            initial={{ rotate: 0 }}
+            animate={{ 
+                rotate: [-3, 3, -3], 
+                scale: [1, 1.05, 1],
+                x: [-1, 1, -1]
+            }}
+            transition={{ 
+                repeat: Infinity, 
+                duration: 0.15, 
+                repeatType: "reverse" 
+            }}
+            onClick={onChaosClick}
+            className="fixed top-4 right-4 md:top-8 md:right-8 px-4 py-2 bg-red-600 text-white font-bold text-[10px] md:text-xs rounded shadow-[0_0_15px_rgba(220,38,38,0.8)] z-[70] cursor-none border-2 border-red-400 hover:bg-red-700 hover:border-red-900 pointer-events-auto hover:scale-110 active:scale-90 transition-transform"
+        >
+            IDR CLICK NA KARNA ⚠️
+        </motion.button>
+      )}
+
       <div className="pointer-events-auto w-full flex justify-center">
       <AnimatePresence mode="wait">
         {isMagic ? (
