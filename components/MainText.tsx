@@ -24,6 +24,8 @@ const LETTER_COLORS = [
 ];
 
 const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick, onCallClick, onHypeClick }) => {
+  const [weirdText, setWeirdText] = useState("WEIRD CAPTURES");
+
   // Animation variants
   const container: Variants = {
     hidden: { opacity: 0 },
@@ -227,7 +229,7 @@ const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick, onCallClick,
               </motion.div>
 
               {/* Buttons Container */}
-              <div className="flex flex-col md:flex-row flex-wrap justify-center gap-6 z-50">
+              <div className="flex flex-col md:flex-row flex-wrap justify-center gap-6 z-50 items-center">
                   {/* The Pink Button */}
                   <motion.button
                     variants={imageAnim}
@@ -250,15 +252,38 @@ const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick, onCallClick,
                     Call Karo Bacha
                   </motion.button>
 
-                  {/* The Cyan/Blue Button (Do I Know?) */}
+                  {/* The Unique Gradient Button (Do I Know?) */}
+                  <motion.button
+                    variants={imageAnim}
+                    whileHover={{ 
+                        scale: 1.05, 
+                        boxShadow: "0 0 35px rgba(6,182,212,0.8), 0 0 15px rgba(147,51,234,0.5)"
+                    }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={onHypeClick}
+                    className="relative px-8 py-3 font-bold rounded-full tracking-widest text-xs md:text-sm uppercase transition-all duration-300 cursor-none overflow-hidden group border border-white/20 text-white shadow-[0_0_20px_rgba(6,182,212,0.4)]"
+                  >
+                     {/* Gradient Background */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-600 group-hover:from-cyan-400 group-hover:via-blue-500 group-hover:to-purple-500 transition-colors duration-500" />
+                    
+                    {/* Content */}
+                    <span className="relative z-10 drop-shadow-md flex items-center gap-2">
+                        DO SAAD KNOW YOU?
+                    </span>
+                  </motion.button>
+
+                  {/* The Weird Captures Button (Coming Soon) */}
                   <motion.button
                     variants={imageAnim}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    onClick={onHypeClick}
-                    className="px-8 py-3 bg-cyan-500 hover:bg-cyan-400 text-black font-bold rounded-full shadow-[0_0_20px_rgba(6,182,212,0.5)] tracking-widest text-xs md:text-sm uppercase transition-all duration-300 cursor-none"
+                    onClick={() => {
+                        setWeirdText("COMING SOON 🚧");
+                        setTimeout(() => setWeirdText("WEIRD CAPTURES"), 2000);
+                    }}
+                    className="px-8 py-3 bg-neutral-900 border border-yellow-600/50 hover:bg-yellow-900/20 text-yellow-500 font-bold rounded-full shadow-[0_0_10px_rgba(234,179,8,0.2)] tracking-widest text-xs md:text-sm uppercase transition-all duration-300 cursor-none"
                   >
-                    DO I KNOW ?
+                    {weirdText}
                   </motion.button>
               </div>
             </motion.div>

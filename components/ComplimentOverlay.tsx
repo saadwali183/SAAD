@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -5,24 +6,28 @@ interface ComplimentOverlayProps {
   onClose: () => void;
 }
 
-const COMPLIMENTS = [
-  "IS THE COOLEST PERSON ALIVE RIGHT NOW ✨",
-  "HAS THE BEST TASTE IN FRIES 🍟",
-  "IS SECRETLY A SUPERHERO 🦸‍♂️",
-  "JUST MADE THIS WEBSITE 100% COOLER ❄️",
-  "IS A CERTIFIED LEGEND 👑",
-  "KNOWS THE SECRET TO ETERNAL SWAG 😎"
+const MEMORIES = [
+  "SAW YOU BUYING FRIES AT 3AM LAST NIGHT 🍟",
+  "THINKS YOU OWE HIM A BURGER 🍔",
+  "SPOTTED YOU DANCING ALONE IN THE RAIN 🌧️",
+  "REMEMBERS YOU FROM A PAST LIFE (AS A NINJA) 🥷",
+  "KNOWS YOU ARE SECRETLY OBSESSED WITH CATS 🐈",
+  "SAW YOU AT THE GYM LIFTING 500KG (REAL) 💪",
+  "SUSPECTS YOU STOLE HIS FAVORITE CHARGER 🔌",
+  "SAW YOU FLYING OVER THE CITY YESTERDAY 🦸‍♂️",
+  "REMEMBERED YOU FROM HIS DREAM ABOUT PIZZA 🍕",
+  "KNOWS YOU ARE THE MAIN CHARACTER ✨"
 ];
 
 const ComplimentOverlay: React.FC<ComplimentOverlayProps> = ({ onClose }) => {
   const [name, setName] = useState('');
   const [step, setStep] = useState<'input' | 'result'>('input');
-  const [compliment, setCompliment] = useState(COMPLIMENTS[0]);
+  const [memory, setMemory] = useState(MEMORIES[0]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (name.trim().length > 0) {
-      setCompliment(COMPLIMENTS[Math.floor(Math.random() * COMPLIMENTS.length)]);
+      setMemory(MEMORIES[Math.floor(Math.random() * MEMORIES.length)]);
       setStep('result');
     }
   };
@@ -117,7 +122,8 @@ const ComplimentOverlay: React.FC<ComplimentOverlayProps> = ({ onClose }) => {
                 className="bg-neutral-900/80 backdrop-blur-md border border-cyan-500/30 p-8 rounded-2xl transform rotate-1 max-w-2xl"
             >
                 <p className="text-xl md:text-3xl text-cyan-100 font-medium tracking-wide leading-relaxed">
-                   {compliment}
+                   <span className="text-white/60 text-sm block mb-2 tracking-widest uppercase">Saad says:</span>
+                   "HE {memory}"
                 </p>
             </motion.div>
 
