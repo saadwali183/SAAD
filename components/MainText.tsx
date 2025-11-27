@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 
 interface MainTextProps {
@@ -8,8 +9,8 @@ interface MainTextProps {
   onHypeClick: () => void;
 }
 
-// Static Luffy Image
-const LUFFY_IMG = "https://avatarfiles.alphacoders.com/374/374849.png";
+// Single Static High-Quality Image
+const STATIC_IMAGE = "https://avatarfiles.alphacoders.com/374/374849.png"; // Luffy
 
 // Updated Colors: White and Purple Mix
 const LETTER_COLORS = [
@@ -209,17 +210,19 @@ const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick, onCallClick,
                 i probably ate fires today
               </motion.p>
 
-              {/* The Picture - Static One Piece Character */}
+              {/* The Picture - Static */}
               <motion.div 
                 variants={imageAnim}
                 initial="hidden"
                 animate="show"
-                className={`relative w-80 h-80 md:w-[30rem] md:h-[30rem] rounded-xl overflow-hidden mb-12 transition-all duration-700 bg-neutral-800 ${isMagic ? 'shadow-xl border-4 border-white' : 'shadow-2xl border border-neutral-800'}`}
+                className={`relative w-80 h-80 md:w-[30rem] md:h-[30rem] rounded-xl overflow-hidden mb-12 bg-neutral-800 ${isMagic ? 'shadow-xl border-4 border-white' : 'shadow-2xl border border-neutral-800'}`}
               >
                  <motion.img 
-                    src={LUFFY_IMG} 
-                    alt="Luffy" 
-                    className="w-full h-full object-cover absolute inset-0"
+                    src={STATIC_IMAGE} 
+                    alt="Character" 
+                    className="w-full h-full object-cover"
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.5 }}
                  />
               </motion.div>
 
@@ -236,17 +239,6 @@ const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick, onCallClick,
                     WANNA EAT FRIES
                   </motion.button>
 
-                  {/* The Cyan Button (Updated Text) */}
-                  <motion.button
-                    variants={imageAnim}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={onHypeClick}
-                    className="px-8 py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-full shadow-[0_0_20px_rgba(8,145,178,0.5)] tracking-widest text-xs md:text-sm uppercase transition-all duration-300 cursor-none"
-                  >
-                    DO I KNOW ?
-                  </motion.button>
-
                   {/* The Green Button */}
                   <motion.button
                     variants={imageAnim}
@@ -256,6 +248,17 @@ const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick, onCallClick,
                     className="px-8 py-3 bg-green-600 hover:bg-green-500 text-white font-bold rounded-full shadow-[0_0_20px_rgba(34,197,94,0.5)] tracking-widest text-xs md:text-sm uppercase transition-all duration-300 cursor-none"
                   >
                     Call Karo Bacha
+                  </motion.button>
+
+                  {/* The Cyan/Blue Button (Do I Know?) */}
+                  <motion.button
+                    variants={imageAnim}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={onHypeClick}
+                    className="px-8 py-3 bg-cyan-500 hover:bg-cyan-400 text-black font-bold rounded-full shadow-[0_0_20px_rgba(6,182,212,0.5)] tracking-widest text-xs md:text-sm uppercase transition-all duration-300 cursor-none"
+                  >
+                    DO I KNOW ?
                   </motion.button>
               </div>
             </motion.div>
