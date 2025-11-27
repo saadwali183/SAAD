@@ -7,16 +7,20 @@ import CallingOverlay from './components/CallingOverlay';
 import HeartRain from './components/HeartRain';
 import ComplimentOverlay from './components/ComplimentOverlay';
 import MidnightThoughts from './components/MidnightThoughts';
+import BSODOverlay from './components/BSODOverlay';
+import AuraScannerOverlay from './components/AuraScannerOverlay';
 import { AnimatePresence } from 'framer-motion';
 
 const App: React.FC = () => {
   const [isMagic, setIsMagic] = useState(false);
   const [isCalling, setIsCalling] = useState(false);
   const [showCompliment, setShowCompliment] = useState(false);
+  const [isBSOD, setIsBSOD] = useState(false);
+  const [isScanning, setIsScanning] = useState(false);
 
   return (
     <main 
-      className={`relative w-screen h-screen overflow-hidden flex items-center justify-center transition-colors duration-1000 ease-in-out ${isMagic ? 'bg-pink-500' : 'bg-black'}`}
+      className={`relative w-screen h-[100dvh] overflow-hidden flex items-center justify-center transition-colors duration-1000 ease-in-out ${isMagic ? 'bg-pink-500' : 'bg-black'}`}
     >
       {/* Background/Vignette Effect for depth - Fades out in magic mode */}
       <div 
@@ -45,6 +49,8 @@ const App: React.FC = () => {
         onMagicClick={() => setIsMagic(!isMagic)} 
         onCallClick={() => setIsCalling(true)}
         onHypeClick={() => setShowCompliment(true)}
+        onDeleteSystem={() => setIsBSOD(true)}
+        onScanClick={() => setIsScanning(true)}
       />
 
       {/* Ticker Tape - Midnight Thoughts */}
@@ -61,6 +67,20 @@ const App: React.FC = () => {
       <AnimatePresence>
         {showCompliment && (
             <ComplimentOverlay onClose={() => setShowCompliment(false)} />
+        )}
+      </AnimatePresence>
+
+      {/* BSOD Overlay */}
+      <AnimatePresence>
+        {isBSOD && (
+            <BSODOverlay onClose={() => setIsBSOD(false)} />
+        )}
+      </AnimatePresence>
+
+      {/* Aura Scanner Overlay */}
+      <AnimatePresence>
+        {isScanning && (
+            <AuraScannerOverlay onClose={() => setIsScanning(false)} />
         )}
       </AnimatePresence>
     </main>

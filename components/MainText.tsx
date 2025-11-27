@@ -7,6 +7,8 @@ interface MainTextProps {
   onMagicClick: () => void;
   onCallClick: () => void;
   onHypeClick: () => void;
+  onDeleteSystem: () => void;
+  onScanClick: () => void;
 }
 
 // Single Static High-Quality Image
@@ -23,7 +25,7 @@ const LETTER_COLORS = [
     "#FFFFFF", // White
 ];
 
-const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick, onCallClick, onHypeClick }) => {
+const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick, onCallClick, onHypeClick, onDeleteSystem, onScanClick }) => {
   const [isTyping, setIsTyping] = useState(true); // Start TRUE so user sees it immediately
   
   // Motion value for age counting
@@ -366,6 +368,33 @@ const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick, onCallClick,
                         DO SAAD KNOW YOU?
                     </span>
                   </motion.button>
+
+                  {/* SCAN MY AURA Button */}
+                  <motion.button
+                    variants={imageAnim}
+                    whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(168,85,247,0.6)" }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={onScanClick}
+                    className="px-8 py-3 bg-purple-900/40 border border-purple-500 hover:bg-purple-800 text-purple-200 font-bold rounded-full tracking-widest text-xs md:text-sm uppercase transition-all duration-300 cursor-none w-full md:w-auto flex items-center justify-center gap-2"
+                  >
+                    <span>👁️</span> SCAN MY AURA
+                  </motion.button>
+
+                  {/* DELETE SYSTEM BUTTON (BSOD) */}
+                  <motion.button
+                    variants={imageAnim}
+                    whileHover={{ 
+                        scale: 1.1, 
+                        backgroundColor: "#FF0000",
+                        rotate: [-1, 1, -1, 0]
+                    }}
+                    whileTap={{ scale: 0.9 }}
+                    onClick={onDeleteSystem}
+                    className="px-8 py-3 bg-red-900/50 border border-red-600 hover:border-red-400 text-red-200 hover:text-white font-mono font-bold rounded-full shadow-[0_0_15px_rgba(220,38,38,0.3)] tracking-widest text-xs md:text-sm uppercase transition-all duration-100 cursor-none w-full md:w-auto"
+                  >
+                    DELETE SYSTEM ⚠️
+                  </motion.button>
+
               </div>
             </motion.div>
         )}
