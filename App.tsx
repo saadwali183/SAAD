@@ -3,6 +3,7 @@ import FireCursor from './components/FireCursor';
 import MainText from './components/MainText';
 import AmbientParticles from './components/AmbientParticles';
 import CallingOverlay from './components/CallingOverlay';
+import HeartRain from './components/HeartRain';
 import { AnimatePresence } from 'framer-motion';
 
 const App: React.FC = () => {
@@ -25,6 +26,11 @@ const App: React.FC = () => {
 
       {/* Ambient White Motions */}
       <AmbientParticles isMagic={isMagic} />
+      
+      {/* Raining Hearts in Magic Mode */}
+      <AnimatePresence>
+        {isMagic && <HeartRain />}
+      </AnimatePresence>
 
       {/* The Particle System Layer (Cursor) */}
       <FireCursor color={isMagic ? '#ffffff' : '#ffffff'} />

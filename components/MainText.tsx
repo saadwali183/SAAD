@@ -118,11 +118,11 @@ const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick, onCallClick 
                 exit="exit"
                 className="flex flex-col items-center"
             >
-                <h1 className="text-6xl md:text-8xl font-stylish text-white mb-6 drop-shadow-lg">
-                   oh pookie
+                <h1 className="text-5xl md:text-8xl font-stylish text-white mb-6 drop-shadow-lg text-center leading-tight">
+                   awww pookie you love me
                 </h1>
-                <p className="text-2xl md:text-4xl font-light text-white tracking-widest lowercase">
-                    you love me awwwww...........
+                <p className="text-2xl md:text-5xl font-light text-white tracking-widest lowercase animate-pulse">
+                    lesssssss gooooooooo
                 </p>
                 <motion.div 
                   initial={{ opacity: 0 }} 
@@ -138,7 +138,7 @@ const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick, onCallClick 
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 2 }}
-                    onClick={onMagicClick} // Toggles back effectively if handled in parent, though simple toggle logic implies 'setTrue' usually. We can leave it for now or add a 'reset'.
+                    onClick={onMagicClick}
                     className="mt-12 text-white/50 hover:text-white text-sm tracking-widest cursor-none"
                  >
                     BACK
@@ -194,7 +194,7 @@ const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick, onCallClick 
                 </motion.div>
               </div>
 
-              {/* The Finger Fries Picture - Properly Blended */}
+              {/* The Picture - Cool Person with Sunglasses */}
               <motion.div 
                 variants={imageAnim}
                 initial="hidden"
@@ -202,9 +202,9 @@ const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick, onCallClick 
                 className={`relative w-80 h-80 md:w-[30rem] md:h-[30rem] rounded-xl overflow-hidden mb-12 transition-all duration-700 ${isMagic ? 'shadow-xl border-4 border-white' : 'shadow-none border-none'}`}
               >
                 <img 
-                    src="https://images.unsplash.com/photo-1585109649139-366815a0d713?q=80&w=1000&auto=format&fit=crop" 
-                    alt="Crispy Finger Fries on Black" 
-                    className="w-full h-full object-cover transition-transform duration-700 ease-in-out hover:scale-105"
+                    src="https://images.unsplash.com/photo-1488161628813-994252600322?q=80&w=1000&auto=format&fit=crop" 
+                    alt="Saad with Sunglasses" 
+                    className="w-full h-full object-cover transition-transform duration-700 ease-in-out hover:scale-105 grayscale contrast-125"
                 />
               </motion.div>
 
@@ -220,7 +220,7 @@ const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick, onCallClick 
                     onClick={onMagicClick}
                     className="px-8 py-3 bg-pink-500 hover:bg-pink-400 text-white font-bold rounded-full shadow-[0_0_20px_rgba(236,72,153,0.5)] tracking-widest text-sm md:text-base uppercase transition-all duration-300 cursor-none"
                   >
-                    Click Here to See Magic
+                    WANNA EAT FRIES
                   </motion.button>
 
                   {/* The Green Button */}

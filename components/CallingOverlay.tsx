@@ -25,9 +25,9 @@ const CallingOverlay: React.FC<CallingOverlayProps> = ({ onEndCall }) => {
                 className="w-40 h-40 rounded-full bg-neutral-900 border border-neutral-700 relative overflow-hidden mb-4 shadow-2xl"
             >
                  <img 
-                    src="https://images.unsplash.com/photo-1585109649139-366815a0d713?q=80&w=1000&auto=format&fit=crop" 
+                    src="https://images.unsplash.com/photo-1488161628813-994252600322?q=80&w=1000&auto=format&fit=crop" 
                     alt="Caller" 
-                    className="w-full h-full object-cover opacity-90" 
+                    className="w-full h-full object-cover grayscale contrast-125" 
                  />
             </motion.div>
             
