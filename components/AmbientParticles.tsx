@@ -8,6 +8,8 @@ interface Particle {
   size: number;
   alpha: number;
   targetAlpha: number;
+  depth: number;
+  phase: number;
 }
 
 interface AmbientParticlesProps {
@@ -28,18 +30,23 @@ const AmbientParticles: React.FC<AmbientParticlesProps> = ({ isMagic = false }) 
     canvas.width = width;
     canvas.height = height;
 
+    // Configuration
+    const particleCount = 120; // Enough to feel "ambient" but not crowded
     const particles: Particle[] = [];
-    const particleCount = 50;
 
+    // Initialize particles
     for (let i = 0; i < particleCount; i++) {
+      const depth = Math.random(); // 0 (far) to 1 (near)
       particles.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.2,
-        vy: (Math.random() - 0.5) * 0.2,
-        size: Math.random() * 2,
-        alpha: Math.random() * 0.5,
-        targetAlpha: Math.random() * 0.5
+        vx: (Math.random() - 0.5) * 0.3 * (depth * 0.5 + 0.5),
+        vy: (Math.random() - 0.5) * 0.3 * (depth * 0.5 + 0.5),
+        size: (Math.random() * 2 + 0.5) * (depth * 0.8 + 0.3),
+        alpha: Math.random() * 0.4 + 0.1,
+        targetAlpha: Math.random() * 0.4 + 0.1,
+        depth: depth,
+        phase: Math.random() * Math.PI * 2
       });
     }
 
@@ -52,21 +59,25 @@ const AmbientParticles: React.FC<AmbientParticlesProps> = ({ isMagic = false }) 
     window.addEventListener('resize', resize);
 
     let animationFrameId: number;
+    let time = 0;
 
     const loop = () => {
       ctx.clearRect(0, 0, width, height);
-      
+      time += 0.005;
+
       particles.forEach(p => {
-        p.x += p.vx;
-        p.y += p.vy;
+        // Organic movement: Base velocity + Sine wave drift
+        p.x += p.vx + Math.sin(time + p.phase) * 0.15 * p.depth;
+        p.y += p.vy + Math.cos(time + p.phase * 0.7) * 0.15 * p.depth;
 
-        // Wrap around screen
-        if (p.x < 0) p.x = width;
-        if (p.x > width) p.x = 0;
-        if (p.y < 0) p.y = height;
-        if (p.y > height) p.y = 0;
+        // Wrap around screen boundaries with buffer
+        const buffer = 50;
+        if (p.x < -buffer) p.x = width + buffer;
+        if (p.x > width + buffer) p.x = -buffer;
+        if (p.y < -buffer) p.y = height + buffer;
+        if (p.y > height + buffer) p.y = -buffer;
 
-        // Pulse opacity
+        // Twinkle/Pulse opacity
         if (Math.abs(p.alpha - p.targetAlpha) < 0.01) {
             p.targetAlpha = Math.random() * 0.4 + 0.1;
         }
@@ -74,9 +85,22 @@ const AmbientParticles: React.FC<AmbientParticlesProps> = ({ isMagic = false }) 
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        // White particles look good on both Black and Pink
-        ctx.fillStyle = `rgba(255, 255, 255, ${p.alpha})`;
+        
+        // Render Color
+        // If magic mode, slightly brighter/sharper. Default mode: soft white.
+        const opacity = p.alpha * (isMagic ? 0.9 : 0.6) * p.depth; 
+        ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
+        
+        // Glow effect for "near" particles
+        if (p.depth > 0.7) {
+             ctx.shadowBlur = p.size * 2;
+             ctx.shadowColor = "rgba(255,255,255,0.4)";
+        } else {
+             ctx.shadowBlur = 0;
+        }
+        
         ctx.fill();
+        ctx.shadowBlur = 0; // Reset
       });
 
       animationFrameId = requestAnimationFrame(loop);
@@ -88,12 +112,13 @@ const AmbientParticles: React.FC<AmbientParticlesProps> = ({ isMagic = false }) 
       window.removeEventListener('resize', resize);
       cancelAnimationFrame(animationFrameId);
     };
-  }, []);
+  }, [isMagic]);
 
   return (
     <canvas 
       ref={canvasRef} 
-      className="absolute inset-0 pointer-events-none z-0 opacity-60"
+      className="absolute inset-0 pointer-events-none z-[1]"
+      style={{ mixBlendMode: 'screen' }}
     />
   );
 };

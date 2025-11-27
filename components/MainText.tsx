@@ -1,13 +1,12 @@
 
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence, Variants } from 'framer-motion';
+import { motion, AnimatePresence, Variants, useMotionValue, useTransform, animate } from 'framer-motion';
 
 interface MainTextProps {
   isMagic: boolean;
   onMagicClick: () => void;
   onCallClick: () => void;
   onHypeClick: () => void;
-  onChaosClick: () => void;
 }
 
 // Single Static High-Quality Image
@@ -24,9 +23,20 @@ const LETTER_COLORS = [
     "#FFFFFF", // White
 ];
 
-const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick, onCallClick, onHypeClick, onChaosClick }) => {
-  const [weirdText, setWeirdText] = useState("WEIRD CAPTURES");
+const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick, onCallClick, onHypeClick }) => {
   const [isTyping, setIsTyping] = useState(true); // Start TRUE so user sees it immediately
+  
+  // Motion value for age counting
+  const count = useMotionValue(0);
+  const roundedAge = useTransform(count, (latest) => Math.round(latest));
+
+  // Age Animation Logic
+  useEffect(() => {
+    if (!isMagic) {
+        const controls = animate(count, 19, { duration: 2.5, ease: "circOut" });
+        return controls.stop;
+    }
+  }, [isMagic, count]);
 
   // Fake Typing Logic Loop
   useEffect(() => {
@@ -158,27 +168,6 @@ const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick, onCallClick,
       animate="show"
       className="flex flex-col items-center justify-center text-center z-[60] select-none px-4 w-full h-full pointer-events-none overflow-y-auto overflow-x-hidden"
     >
-      {/* IDR CLICK NA KARNA - Chaos Button */}
-      {!isMagic && (
-        <motion.button
-            initial={{ rotate: 0 }}
-            animate={{ 
-                rotate: [-3, 3, -3], 
-                scale: [1, 1.05, 1],
-                x: [-1, 1, -1]
-            }}
-            transition={{ 
-                repeat: Infinity, 
-                duration: 0.15, 
-                repeatType: "reverse" 
-            }}
-            onClick={onChaosClick}
-            className="fixed top-4 right-4 md:top-8 md:right-8 px-4 py-2 bg-red-600 text-white font-bold text-[10px] md:text-xs rounded shadow-[0_0_15px_rgba(220,38,38,0.8)] z-[70] cursor-none border-2 border-red-400 hover:bg-red-700 hover:border-red-900 pointer-events-auto hover:scale-110 active:scale-90 transition-transform"
-        >
-            IDR CLICK NA KARNA ⚠️
-        </motion.button>
-      )}
-
       <div className="pointer-events-auto w-full flex justify-center py-10">
       <AnimatePresence mode="wait">
         {isMagic ? (
@@ -192,7 +181,7 @@ const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick, onCallClick,
                 className="flex flex-col items-center"
             >
                 <h1 className="text-5xl md:text-8xl font-stylish text-white mb-6 drop-shadow-lg text-center leading-tight">
-                   awww pookie you love me
+                   awww pookie you love fires too
                 </h1>
                 <p className="text-2xl md:text-5xl font-light text-white tracking-widest lowercase animate-pulse">
                     lesssssss gooooooooo
@@ -299,7 +288,7 @@ const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick, onCallClick,
                 variants={imageAnim}
                 initial="hidden"
                 animate="show"
-                className={`relative w-72 h-72 md:w-[28rem] md:h-[28rem] rounded-xl overflow-hidden mb-12 bg-neutral-800 ${isMagic ? 'shadow-xl border-4 border-white' : 'shadow-2xl border border-neutral-800'}`}
+                className={`relative w-72 h-72 md:w-[28rem] md:h-[28rem] rounded-xl overflow-hidden mb-8 bg-neutral-800 ${isMagic ? 'shadow-xl border-4 border-white' : 'shadow-2xl border border-neutral-800'}`}
               >
                  <motion.img 
                     src={STATIC_IMAGE} 
@@ -308,6 +297,30 @@ const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick, onCallClick,
                     whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.5 }}
                  />
+              </motion.div>
+              
+              {/* BIRTHDAY & AGE SECTION */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.5, duration: 1 }}
+                className="flex items-center gap-8 md:gap-12 mb-10 border-t border-b border-white/10 py-4 px-12 bg-white/5 backdrop-blur-sm rounded-full"
+              >
+                 <div className="flex flex-col items-center">
+                    <span className="text-white/40 text-[10px] md:text-xs tracking-widest uppercase mb-1">BORN ON</span>
+                    <span className="text-white text-xl md:text-2xl font-stylish font-bold tracking-widest">6.6.2006</span>
+                 </div>
+                 
+                 <div className="w-px h-8 bg-white/20" />
+                 
+                 <div className="flex flex-col items-center">
+                    <span className="text-white/40 text-[10px] md:text-xs tracking-widest uppercase mb-1">LEVEL</span>
+                    <div className="flex items-baseline">
+                        <motion.span className="text-white text-xl md:text-2xl font-stylish font-bold tabular-nums">
+                            {roundedAge}
+                        </motion.span>
+                    </div>
+                 </div>
               </motion.div>
 
               {/* Buttons Container */}
@@ -352,20 +365,6 @@ const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick, onCallClick,
                     <span className="relative z-10 drop-shadow-md flex items-center justify-center gap-2 text-center">
                         DO SAAD KNOW YOU?
                     </span>
-                  </motion.button>
-
-                  {/* The Weird Captures Button (Coming Soon) */}
-                  <motion.button
-                    variants={imageAnim}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => {
-                        setWeirdText("COMING SOON 🚧");
-                        setTimeout(() => setWeirdText("WEIRD CAPTURES"), 2000);
-                    }}
-                    className="px-8 py-3 bg-neutral-900 border border-yellow-600/50 hover:bg-yellow-900/20 text-yellow-500 font-bold rounded-full shadow-[0_0_10px_rgba(234,179,8,0.2)] tracking-widest text-xs md:text-sm uppercase transition-all duration-300 cursor-none w-full md:w-auto"
-                  >
-                    {weirdText}
                   </motion.button>
               </div>
             </motion.div>
