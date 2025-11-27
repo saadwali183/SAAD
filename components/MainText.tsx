@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 
 interface MainTextProps {
@@ -7,6 +7,20 @@ interface MainTextProps {
   onCallClick: () => void;
 }
 
+// Static Luffy Image
+const LUFFY_IMG = "https://avatarfiles.alphacoders.com/374/374849.png";
+
+// Updated Colors: White and Purple Mix
+const LETTER_COLORS = [
+    "#FFFFFF", // White
+    "#D500F9", // Neon Purple
+    "#FFFFFF", // White
+    "#9D00FF", // Electric Purple
+    "#FFFFFF", // White
+    "#E040FB", // Soft Purple
+    "#FFFFFF", // White
+];
+
 const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick, onCallClick }) => {
   // Animation variants
   const container: Variants = {
@@ -14,7 +28,7 @@ const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick, onCallClick 
     show: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.15,
+        staggerChildren: 0.1,
         delayChildren: 0.2,
       },
     },
@@ -34,35 +48,64 @@ const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick, onCallClick 
     }
   };
 
+  const letterContainer: Variants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.08,
+        delayChildren: 0.3
+      }
+    }
+  };
+
   const letterAnim: Variants = {
-    hidden: { opacity: 0, y: 20, filter: 'blur(10px)' },
+    hidden: { 
+        opacity: 0, 
+        y: 100, 
+        rotateX: -90,
+        filter: 'blur(10px)' 
+    },
     show: { 
         opacity: 1, 
         y: 0, 
+        rotateX: 0,
         filter: 'blur(0px)',
         transition: {
-            duration: 0.8,
-            ease: [0.6, -0.05, 0.01, 0.99] as const
+            type: "spring",
+            damping: 12,
+            stiffness: 100
         }
     }
   };
 
-  const mainTextPulse: Variants = {
-    hidden: { 
-        textShadow: "0 0 0px rgba(255,255,255,0)" 
-    },
-    show: {
+  const floatingWave: Variants = {
+    animate: (i: number) => ({
+      y: [0, -15, 0],
       textShadow: [
-        "0 0 20px rgba(255,255,255,0.1)",
-        "0 0 50px rgba(255,255,255,0.4)",
-        "0 0 20px rgba(255,255,255,0.1)",
+        `0 0 10px ${LETTER_COLORS[i % LETTER_COLORS.length]}40`, // 40 is hex opacity
+        `0 0 40px ${LETTER_COLORS[i % LETTER_COLORS.length]}80`,
+        `0 0 10px ${LETTER_COLORS[i % LETTER_COLORS.length]}40`,
       ],
       transition: {
-        duration: 3,
+        delay: 1.5 + (i * 0.1), // Start after entrance
         repeat: Infinity,
-        repeatType: "reverse",
-        ease: "easeInOut",
-      },
+        duration: 4,
+        ease: "easeInOut"
+      }
+    })
+  };
+
+  const secondaryText: Variants = {
+    hidden: { opacity: 0, clipPath: "inset(0 100% 0 0)" },
+    show: { 
+        opacity: 1, 
+        clipPath: "inset(0 0% 0 0)",
+        transition: {
+            duration: 1.5,
+            ease: "easeOut",
+            delay: 1.2
+        }
     }
   };
 
@@ -75,27 +118,8 @@ const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick, onCallClick 
         transition: {
             duration: 1.2,
             ease: "easeOut",
-            delay: 1.0
+            delay: 0.5
         }
-    }
-  };
-
-  const flickerGlow: Variants = {
-    animate: {
-      textShadow: [
-        "0px 0px 4px rgba(255,255,255,0.1)",
-        "0px 0px 10px rgba(255,255,255,0.4)",
-        "0px 0px 4px rgba(255,255,255,0.1)",
-        "0px 0px 15px rgba(255,255,255,0.6)",
-        "0px 0px 4px rgba(255,255,255,0.1)",
-      ],
-      opacity: [1, 0.9, 1, 0.8, 1],
-      transition: {
-        duration: 3,
-        repeat: Infinity,
-        repeatType: "reverse",
-        ease: "easeInOut",
-      }
     }
   };
 
@@ -155,66 +179,54 @@ const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick, onCallClick 
                 exit="exit"
             >
               {/* Primary Line: saadiii */}
-              <motion.div className="mb-4 md:mb-6 relative">
+              <motion.div className="mb-2 relative">
                 <motion.h1 
-                    className="text-8xl md:text-[10rem] font-stylish text-white leading-none tracking-tight"
-                    variants={mainTextPulse}
-                    animate="show"
+                    className="text-8xl md:text-[10rem] font-stylish leading-none tracking-tight perspective-1000"
+                    variants={letterContainer}
                     initial="hidden"
+                    animate={["show", "animate"]}
                 >
                   {Array.from("saadiii").map((char, i) => (
-                    <motion.span key={i} variants={letterAnim} className="inline-block">
+                    <motion.span 
+                        key={i} 
+                        custom={i}
+                        variants={{...letterAnim, ...floatingWave}}
+                        className="inline-block origin-bottom transform-style-3d"
+                        style={{ color: LETTER_COLORS[i % LETTER_COLORS.length] }}
+                    >
                       {char}
                     </motion.span>
                   ))}
                 </motion.h1>
               </motion.div>
 
-              {/* Secondary Line: i love finger fries */}
-              <div className="text-xl md:text-3xl font-light tracking-[0.2em] text-neutral-300 flex flex-col md:flex-row items-center gap-2 md:gap-4 mb-8 md:mb-12">
-                <motion.div className="flex lowercase">
-                    {Array.from("i love").map((char, i) => (
-                        <motion.span key={i} variants={letterAnim} animate="show" initial="hidden" className="inline-block">
-                            {char === " " ? "\u00A0" : char}
-                        </motion.span>
-                    ))}
-                </motion.div>
-                
-                {/* Special treatment for finger fries */}
-                <motion.div 
-                    variants={flickerGlow}
-                    animate="animate"
-                    className="flex relative font-bold text-white lowercase"
-                >
-                     {Array.from("finger fries").map((char, i) => (
-                        <motion.span key={i} variants={letterAnim} animate="show" initial="hidden" className="inline-block">
-                            {char === " " ? "\u00A0" : char}
-                        </motion.span>
-                    ))}
-                </motion.div>
-              </div>
+              {/* Secondary Text */}
+              <motion.p
+                variants={secondaryText}
+                className="text-white/70 text-sm md:text-lg uppercase tracking-[0.3em] font-light mb-10"
+              >
+                i probably ate fires today
+              </motion.p>
 
-              {/* The Picture - Cool Person with Sunglasses */}
+              {/* The Picture - Static One Piece Character */}
               <motion.div 
                 variants={imageAnim}
                 initial="hidden"
                 animate="show"
-                className={`relative w-80 h-80 md:w-[30rem] md:h-[30rem] rounded-xl overflow-hidden mb-12 transition-all duration-700 ${isMagic ? 'shadow-xl border-4 border-white' : 'shadow-none border-none'}`}
+                className={`relative w-80 h-80 md:w-[30rem] md:h-[30rem] rounded-xl overflow-hidden mb-12 transition-all duration-700 bg-neutral-800 ${isMagic ? 'shadow-xl border-4 border-white' : 'shadow-2xl border border-neutral-800'}`}
               >
-                <img 
-                    src="https://images.unsplash.com/photo-1488161628813-994252600322?q=80&w=1000&auto=format&fit=crop" 
-                    alt="Saad with Sunglasses" 
-                    className="w-full h-full object-cover transition-transform duration-700 ease-in-out hover:scale-105 grayscale contrast-125"
-                />
+                 <motion.img 
+                    src={LUFFY_IMG} 
+                    alt="Luffy" 
+                    className="w-full h-full object-cover absolute inset-0"
+                 />
               </motion.div>
 
               {/* Buttons Container */}
               <div className="flex flex-col md:flex-row gap-6 z-50">
                   {/* The Pink Button */}
                   <motion.button
-                    variants={letterAnim}
-                    initial="hidden"
-                    animate="show"
+                    variants={imageAnim}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={onMagicClick}
@@ -225,9 +237,7 @@ const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick, onCallClick 
 
                   {/* The Green Button */}
                   <motion.button
-                    variants={letterAnim}
-                    initial="hidden"
-                    animate="show"
+                    variants={imageAnim}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={onCallClick}

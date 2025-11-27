@@ -22,12 +22,12 @@ const CallingOverlay: React.FC<CallingOverlayProps> = ({ onEndCall }) => {
             <motion.div 
                 animate={{ scale: [1, 1.05, 1], boxShadow: ["0 0 0 rgba(255,255,255,0)", "0 0 50px rgba(255,255,255,0.1)", "0 0 0 rgba(255,255,255,0)"] }}
                 transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                className="w-40 h-40 rounded-full bg-neutral-900 border border-neutral-700 relative overflow-hidden mb-4 shadow-2xl"
+                className="w-40 h-40 rounded-full bg-neutral-800 border border-neutral-700 relative overflow-hidden mb-4 shadow-2xl"
             >
                  <img 
-                    src="https://images.unsplash.com/photo-1488161628813-994252600322?q=80&w=1000&auto=format&fit=crop" 
+                    src="https://avatarfiles.alphacoders.com/374/374849.png" 
                     alt="Caller" 
-                    className="w-full h-full object-cover grayscale contrast-125" 
+                    className="w-full h-full object-cover" 
                  />
             </motion.div>
             
