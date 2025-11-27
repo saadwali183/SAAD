@@ -3,12 +3,14 @@ import FireCursor from './components/FireCursor';
 import MainText from './components/MainText';
 import AmbientParticles from './components/AmbientParticles';
 import CallingOverlay from './components/CallingOverlay';
+import ComplimentOverlay from './components/ComplimentOverlay';
 import HeartRain from './components/HeartRain';
 import { AnimatePresence } from 'framer-motion';
 
 const App: React.FC = () => {
   const [isMagic, setIsMagic] = useState(false);
   const [isCalling, setIsCalling] = useState(false);
+  const [isComplimenting, setIsComplimenting] = useState(false);
 
   return (
     <main 
@@ -40,12 +42,20 @@ const App: React.FC = () => {
         isMagic={isMagic} 
         onMagicClick={() => setIsMagic(!isMagic)} 
         onCallClick={() => setIsCalling(true)}
+        onHypeClick={() => setIsComplimenting(true)}
       />
 
       {/* Calling Overlay */}
       <AnimatePresence>
         {isCalling && (
             <CallingOverlay onEndCall={() => setIsCalling(false)} />
+        )}
+      </AnimatePresence>
+
+      {/* Compliment Overlay */}
+      <AnimatePresence>
+        {isComplimenting && (
+            <ComplimentOverlay onClose={() => setIsComplimenting(false)} />
         )}
       </AnimatePresence>
     </main>

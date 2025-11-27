@@ -5,6 +5,7 @@ interface MainTextProps {
   isMagic: boolean;
   onMagicClick: () => void;
   onCallClick: () => void;
+  onHypeClick: () => void;
 }
 
 // Static Luffy Image
@@ -21,7 +22,7 @@ const LETTER_COLORS = [
     "#FFFFFF", // White
 ];
 
-const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick, onCallClick }) => {
+const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick, onCallClick, onHypeClick }) => {
   // Animation variants
   const container: Variants = {
     hidden: { opacity: 0 },
@@ -130,7 +131,7 @@ const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick, onCallClick 
       animate="show"
       className="flex flex-col items-center justify-center text-center z-[60] select-none px-4 w-full h-full pointer-events-none"
     >
-      <div className="pointer-events-auto">
+      <div className="pointer-events-auto w-full flex justify-center">
       <AnimatePresence mode="wait">
         {isMagic ? (
             /* Magic Mode Content */
@@ -223,16 +224,27 @@ const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick, onCallClick 
               </motion.div>
 
               {/* Buttons Container */}
-              <div className="flex flex-col md:flex-row gap-6 z-50">
+              <div className="flex flex-col md:flex-row flex-wrap justify-center gap-6 z-50">
                   {/* The Pink Button */}
                   <motion.button
                     variants={imageAnim}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={onMagicClick}
-                    className="px-8 py-3 bg-pink-500 hover:bg-pink-400 text-white font-bold rounded-full shadow-[0_0_20px_rgba(236,72,153,0.5)] tracking-widest text-sm md:text-base uppercase transition-all duration-300 cursor-none"
+                    className="px-8 py-3 bg-pink-500 hover:bg-pink-400 text-white font-bold rounded-full shadow-[0_0_20px_rgba(236,72,153,0.5)] tracking-widest text-xs md:text-sm uppercase transition-all duration-300 cursor-none"
                   >
                     WANNA EAT FRIES
+                  </motion.button>
+
+                  {/* The Cyan Button (Updated Text) */}
+                  <motion.button
+                    variants={imageAnim}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={onHypeClick}
+                    className="px-8 py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-full shadow-[0_0_20px_rgba(8,145,178,0.5)] tracking-widest text-xs md:text-sm uppercase transition-all duration-300 cursor-none"
+                  >
+                    DO I KNOW ?
                   </motion.button>
 
                   {/* The Green Button */}
@@ -241,7 +253,7 @@ const MainText: React.FC<MainTextProps> = ({ isMagic, onMagicClick, onCallClick 
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={onCallClick}
-                    className="px-8 py-3 bg-green-600 hover:bg-green-500 text-white font-bold rounded-full shadow-[0_0_20px_rgba(34,197,94,0.5)] tracking-widest text-sm md:text-base uppercase transition-all duration-300 cursor-none"
+                    className="px-8 py-3 bg-green-600 hover:bg-green-500 text-white font-bold rounded-full shadow-[0_0_20px_rgba(34,197,94,0.5)] tracking-widest text-xs md:text-sm uppercase transition-all duration-300 cursor-none"
                   >
                     Call Karo Bacha
                   </motion.button>
